@@ -9,6 +9,9 @@ import me.robin.fullstackbackend.repository.EmployeeRepository;
 import me.robin.fullstackbackend.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -26,8 +29,40 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto getEmployeeById(Long employeeId) {
         Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Employee with the given id: " + employeeId + " does not exist."));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee with the given id: " + employeeId + " does not exist."));
         return EmployeeMapper.mapToEmployeeDto(employee);
+    }
+
+    @Override
+    public List<EmployeeDto> getAllEmployees() {
+
+        List<Employee> employeeList = employeeRepository.findAll();
+        return employeeList.stream().map((employee) -> EmployeeMapper.mapToEmployeeDto(employee))
+                .collect(Collectors.toList());
+
+    }
+
+    @Override
+    public EmployeeDto updateEmployee(Long employeeId, EmployeeDto updatedEmployee) {
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(
+                ()-> new ResourceNotFoundException("Employee does not exist with given id: " + employeeId)
+        );
+
+        employee.setFirstName(updatedEmployee.getFirstName());
+        employee.setLastName(updatedEmployee.getLastName());
+        employee.setEmail(updatedEmployee.getEmail());
+
+        Employee updatedEmployeeObj = employeeRepository.save(employee);
+        return EmployeeMapper.mapToEmployeeDto(updatedEmployeeObj);
+    }
+
+    @Override
+    public void deleteEmployee(Long employeeId) {
+
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(
+                ()-> new ResourceNotFoundException("Employee does not exist with given id: " + employeeId)
+        );
+
+        employeeRepository.deleteById(employeeId);
     }
 }
