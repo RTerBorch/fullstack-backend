@@ -2,7 +2,6 @@ package me.robin.fullstackbackend.controller;
 
 import lombok.AllArgsConstructor;
 import me.robin.fullstackbackend.dto.EmployeeDto;
-import me.robin.fullstackbackend.models.Employee;
 import me.robin.fullstackbackend.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/employees")
