@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./fullstack-backend
+    env_file:
+      - .env
+    environment:
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ../frontend/fullstack-frontend 
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
