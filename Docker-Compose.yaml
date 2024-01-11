@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   backend:
-    build: ./fullstack-backend
+    build: .
     env_file:
       - .env
     environment:
@@ -13,7 +13,7 @@ services:
       - "8080:8080"
 
   frontend:
-    build: ../frontend/fullstack-frontend 
+    build: /home/ec2-user/frontend/fullstack-frontend
     depends_on:
       - backend
     ports:
